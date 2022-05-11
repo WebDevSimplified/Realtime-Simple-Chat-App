@@ -1,17 +1,47 @@
-const io = require('socket.io')(3000)
+const mime = require('mime');
 
-const users = {}
+const express = require('express');
 
-io.on('connection', socket => {
-  socket.on('new-user', name => {
-    users[socket.id] = name
-    socket.broadcast.emit('user-connected', name)
-  })
-  socket.on('send-chat-message', message => {
-    socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] })
-  })
-  socket.on('disconnect', () => {
-    socket.broadcast.emit('user-disconnected', users[socket.id])
-    delete users[socket.id]
-  })
-})
+const app = express();
+
+const http = require('http');
+
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server)
+
+
+// Important if index.html has script link to our server
+app.get('/*.js', function(req, res) {
+  console.log(req['url']);
+  res.set('Content-Type', mime.getType(req['url']));
+  res.sendFile(__dirname + req['url']);
+  
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html')
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+
+    socket.on('chat-message', (msg) => {
+        console.log('Message from User:' + msg);
+        socket.broadcast.emit('chat-message', msg);
+    });
+
+    socket.on('new-user', (name) => {
+        console.log(`New User Joined: ${name}`);
+        socket.broadcast.emit('new-user', name);
+    })
+});
+
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+    console.log('WebSocket server running on :3000');
+});
