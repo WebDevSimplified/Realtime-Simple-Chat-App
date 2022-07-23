@@ -13,9 +13,11 @@
     "fs": "^0.0.1-security",
     "html": "^1.0.0",
     "http": "^0.0.1-security",
+    "package-lock.json": "^1.0.0",
+    "package.json": "^2.0.1",
     "socket.io": "^2.4.1"
   },
   "devDependencies": {
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.4"
   }
 }
