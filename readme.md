@@ -1,3 +1,7 @@
 #  Realtime-Simple-Chat-App
 
-You can now just run the server.js and goto localhost:3000 and the chat should pop up.
+Master branch: Base Application
+
+is-typing branch: "is typing" indicator when a person is typing
+
+live-typing branch: live typing indicator
