@@ -34,7 +34,7 @@ io.on('connection', socket => {
     delete users[socket.id]
   })
   
-  socket.on('typing', name => {
-    socket.broadcast.emit('typing', name)
+  socket.on('typing', message => {
+    socket.broadcast.emit('typing', { message: message, name: users[socket.id] });
   })
 })

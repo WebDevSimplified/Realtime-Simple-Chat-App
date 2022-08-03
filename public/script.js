@@ -7,6 +7,7 @@ const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 const typing = document.getElementById('typing')
+var live_message = ''
 
 const name = prompt('What is your name?')
 appendMessage('You joined')
@@ -25,8 +26,8 @@ socket.on('user-disconnected', name => {
   appendMessage(`${name} disconnected`)
 })
 
-socket.on('typing', name => {
-  typing.innerHTML = '<p>' + name + ' is typing...</p>'
+socket.on('typing', data => {
+  typing.innerHTML = '<p>' + data.name + ' is typing...</p>'
 })
 
 messageForm.addEventListener('submit', e => {
@@ -38,7 +39,9 @@ messageForm.addEventListener('submit', e => {
 })
 
 messageInput.addEventListener('keypress', function(){
-  socket.emit('typing', name)
+  live_message += messageInput.innerHTML
+  console.log(live_message)
+  socket.emit('typing', live_message)
 })
 
 function appendMessage(message) {
