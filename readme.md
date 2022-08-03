@@ -1,4 +1,4 @@
-#  Chating with four interfaces
+#  Chatting with four interfaces
 
 Master branch: Base 
 
