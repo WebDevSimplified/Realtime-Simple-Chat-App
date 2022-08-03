@@ -39,8 +39,7 @@ messageForm.addEventListener('submit', e => {
 })
 
 messageInput.addEventListener('keypress', function(){
-  live_message += messageInput.innerHTML
-  socket.emit('typing', live_message)
+  socket.emit('typing', '')
 })
 
 function appendMessage(message) {
