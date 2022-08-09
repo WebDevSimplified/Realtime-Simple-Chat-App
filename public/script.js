@@ -1,8 +1,5 @@
 const socket = io('http://localhost:3000')
 
-//StackOverflow code following youtube tutorial
-//Reference: https://stackoverflow.com/questions/16766488/socket-io-how-to-check-if-user-is-typing-and-broadcast-it-to-other-users
-
 const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
