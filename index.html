@@ -36,19 +36,24 @@
       background-color: white;
       max-width: 1200px;
       width: 80%;
-      display: flex;
+      display: inline;
     }
 
+    #typing {
+      font-style: italic;
+    }
+    
     #message-input {
-      flex-grow: 1;
+      width: 1100px;
     }
   </style>
 </head>
 <body>
   <div id="message-container"></div>
   <form id="send-container">
-    <input type="text" id="message-input">
-    <button type="submit" id="send-button">Send</button>
+    <div id="typing"></div>
+      <input type="text" id="message-input">
+      <button type="submit" id="send-button">Send</button>
   </form>
 </body>
 </html>
