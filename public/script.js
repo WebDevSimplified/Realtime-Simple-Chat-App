@@ -7,7 +7,7 @@ const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 const typing = document.getElementById('typing')
-var indicator_case = 2
+var indicator_case = 3
 var live_message = ''
 
 const name = prompt('What is your name?')
@@ -37,6 +37,9 @@ socket.on('typing', data => {
     }
     else if (indicator_case == 2){
       typing.innerHTML = `<p>${data.name}: ${data.message}...</p>`
+    }
+    else if (indicator_case == 3){
+      typing.innerHTML = `<p>${data.name}: ${data.message.replace(/\S/g, "#")}...</p>`
     }
   }
 })
