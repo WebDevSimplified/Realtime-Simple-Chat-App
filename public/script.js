@@ -4,12 +4,31 @@ const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 const typing = document.getElementById('typing')
-var indicator_case = 3
 var live_message = ''
 
-const name = prompt('What is your name?')
-appendMessage('You joined')
-socket.emit('new-user', name)
+const room = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
+});
+
+const indicator_case = room.room;
+
+// Join chatroom
+socket.emit('joinRoom', room.room);
+
+if (messageForm != null) {
+
+  const name = prompt('What is your name?')
+  appendMessage('You joined')
+  socket.emit('new-user', name)
+
+  messageForm.addEventListener('submit', e => {
+    e.preventDefault()
+    const message = messageInput.value
+    appendMessage(`${name}: ${message}`)
+    socket.emit('send-chat-message', message)
+    messageInput.value = ''
+  })
+}
 
 socket.on('chat-message', data => {
   typing.innerHTML = ''
@@ -25,28 +44,20 @@ socket.on('user-disconnected', name => {
 })
 
 socket.on('typing', data => {
-  if (data.message.length == 0 || indicator_case == 0){
+  if (data.message.length == 0 || indicator_case == 'Chat'){
      typing.innerHTML = ''
    }
   else {
-    if (indicator_case == 1){
+    if (indicator_case == 'Chat1'){
       typing.innerHTML = '<p>' + data.name + ' is typing...</p>'
     }
-    else if (indicator_case == 2){
+    else if (indicator_case == 'Chat2'){
       typing.innerHTML = `<p>${data.name}: ${data.message}...</p>`
     }
-    else if (indicator_case == 3){
+    else if (indicator_case == 'Chat3'){
       typing.innerHTML = `<p>${data.name}: ${data.message.replace(/\S/g, "#")}...</p>`
     }
   }
-})
-
-messageForm.addEventListener('submit', e => {
-  e.preventDefault()
-  const message = messageInput.value
-  appendMessage(`${name}: ${message}`)
-  socket.emit('send-chat-message', message)
-  messageInput.value = ''
 })
 
 messageInput.addEventListener('input', function(){
@@ -58,3 +69,4 @@ function appendMessage(message) {
   messageElement.innerText = message
   messageContainer.append(messageElement)
 }
+
