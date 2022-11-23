@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+   <title>Socket.io Example</title>
+ </head>
+
+ <body>
+   <h1>Our Socket.io Chat Application</h1>
+   <div>
+     <h2>Messages</h2>
+     <ul></ul>
+   </div>
+   <form action="">
+     <input type="text" />
+     <button>Send</button>
+   </form>
+   <script src="/socket.io/socket.io.js"></script>
+   <script>
+     //const socket = io();
+      // select relevant elements
+ const form = document.querySelector("form");
+ const input = document.querySelector("input");
+ messageList = document.querySelector("ul");
+
+ // establish socket.io connection
+ const socket = io();
+
+ // handle sending message to server & input reset
+ function sendMessage(e) {
+   // prevent form submission refreshing page
+   e.preventDefault();
+   // send input value to server as type 'message'
+   socket.emit("message", input.value);
+   // reset input value
+   input.value = "";
+ }
+
+ // add listener to form submission
+ form.addEventListener("submit", sendMessage);
+
+ // add message to our page
+ function addMessageToHTML(message) {
+   // create a new li element
+   const li = document.createElement("li");
+   // add message to the elements text
+   li.innerText = message;
+   // add to list of messages
+   messageList.append(li);
+ }
+  // watch for socket to emit a 'message'
+ socket.on("message", addMessageToHTML);
+
+ // display message when a user connects
+ function alertUserConnected() {
+   addMessageToHTML("User connected");
+ }
+  // watch for socket to emit a 'user connected' event
+ socket.on("user connected", alertUserConnected);
+
+   </script>
+ </body>
+</html>
